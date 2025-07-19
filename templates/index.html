@@ -1,50 +1,86 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Tax Chatbot</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Tax Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+        }
+        #chatbox {
+            width: 500px;
+            margin: 50px auto;
+            border: 1px solid #ddd;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        #conversation {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #fafafa;
+        }
+        .msg {
+            margin: 10px 0;
+        }
+        .user {
+            text-align: right;
+            color: #333;
+        }
+        .bot {
+            text-align: left;
+            color: #007acc;
+        }
+        input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+        }
+        button {
+            padding: 8px 12px;
+            font-size: 16px;
+            background: #007acc;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
-<body class="container py-5">
-    <h1 class="mb-4">Tax Chatbot with History</h1>
+<body>
+    <div id="chatbox">
+        <h2>Tax Chatbot</h2>
+        <div id="conversation"></div>
+        <input type="text" id="userInput" placeholder="Ask your tax question..." style="width: 80%;" />
+        <button onclick="send()">Send</button>
+    </div>
 
-    <form method="post" class="mb-4">
-        <div class="mb-3">
-            <label class="form-label">Ask a tax question:</label>
-            <input type="text" name="question" class="form-control" placeholder="Type your question here" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Ask</button>
-    </form>
+    <script>
+        function send() {
+            var userText = document.getElementById('userInput').value.trim();
+            if (userText === "") return;
 
-    {% if answer %}
-        <div class="alert alert-info">
-            <strong>Answer:</strong> {{ answer }}
-        </div>
-    {% endif %}
+            var conversation = document.getElementById('conversation');
+            conversation.innerHTML += "<div class='msg user'><b>You:</b> " + userText + "</div>";
 
-    <h5>Suggested questions:</h5>
-    <ul>
-        {% for keyword in faq.keys() %}
-            <li>{{ keyword.title() }}</li>
-        {% endfor %}
-    </ul>
-
-    <h5 class="mt-4">Chat History:</h5>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Question</th>
-                <th>Answer</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for q, a in chat_history %}
-                <tr>
-                    <td>{{ q }}</td>
-                    <td>{{ a }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            fetch('/get', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'msg=' + encodeURIComponent(userText)
+            })
+            .then(response => response.text())
+            .then(data => {
+                conversation.innerHTML += "<div class='msg bot'><b>Bot:</b> " + data + "</div>";
+                document.getElementById('userInput').value = "";
+                conversation.scrollTop = conversation.scrollHeight;
+            })
+            .catch(error => {
+                conversation.innerHTML += "<div class='msg bot'><b>Bot:</b> Sorry, there was an error.</div>";
+            });
+        }
+    </script>
 </body>
 </html>

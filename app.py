@@ -1,59 +1,33 @@
-
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import json
-import sqlite3
 
 app = Flask(__name__)
 
-# Load FAQ from JSON
 with open('faq.json') as f:
-    faq = json.load(f)
+    faqs = json.load(f)
 
-# Initialize database
-def init_db():
-    conn = sqlite3.connect('chat.db')
-    c = conn.cursor()
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS chat_history (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            question TEXT,
-            answer TEXT
-        )
-    ''')
-    conn.commit()
-    conn.close()
-
-init_db()
-
-@app.route("/", methods=["GET", "POST"])
+@app.route('/')
 def home():
-    answer = ""
-    if request.method == "POST":
-        question = request.form["question"].lower()
-        found = False
-        for keyword, response in faq.items():
-            if keyword in question:
-                answer = response
-                found = True
-                break
-        if not found:
-            answer = "Sorry, I don't know the answer yet."
+    return render_template('index.html', faq=faqs)
 
-        # Save to DB
-        conn = sqlite3.connect('chat.db')
-        c = conn.cursor()
-        c.execute('INSERT INTO chat_history (question, answer) VALUES (?, ?)', (question, answer))
-        conn.commit()
-        conn.close()
+@app.route('/get', methods=['POST'])
+def chatbot_response():
+    user_input = request.form['msg']
+    best_match = None
+    highest_score = 0
 
-    # Get all chat history
-    conn = sqlite3.connect('chat.db')
-    c = conn.cursor()
-    c.execute('SELECT question, answer FROM chat_history ORDER BY id DESC')
-    chat_history = c.fetchall()
-    conn.close()
+    for faq in faqs:
+        score = fuzz.ratio(user_input.lower(), faq['question'].lower())
+        if score > highest_score:
+            highest_score = score
+            best_match = faq
 
-    return render_template("index.html", answer=answer, faq=faq, chat_history=chat_history)
+    if highest_score > 60:  # minimum match threshold
+        response = best_match['answer']
+    else:
+        response = "Sorry, I don't understand that yet. Please try asking differently or check with a tax expert."
 
-if __name__ == "__main__":
+    return response
+
+if __name__ == '__main__':
     app.run(debug=True)

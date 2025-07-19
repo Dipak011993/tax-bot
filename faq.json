@@ -1,7 +1,54 @@
-
-{
-    "due date": "The due date for ITR filing is 31st July for individuals.",
-    "gst": "Goods and Services Tax (GST) is a value-added tax levied on most goods and services.",
-    "pan card": "A PAN card is a Permanent Account Number used for income tax purposes in India.",
-    "tds": "Tax Deducted at Source (TDS) is income tax deducted at the time of making certain payments."
-}
+[
+  {
+    "question": "What is income tax?",
+    "answer": "Income tax is the tax you pay on your income earned during a financial year."
+  },
+  {
+    "question": "What is the due date for filing income tax return?",
+    "answer": "Usually, the due date for filing individual income tax return is 31st July of the assessment year."
+  },
+  {
+    "question": "What is GST?",
+    "answer": "GST stands for Goods and Services Tax, an indirect tax levied on supply of goods and services."
+  },
+  {
+    "question": "What is the GST registration threshold?",
+    "answer": "Businesses with an annual turnover above ₹40 lakh (goods) or ₹20 lakh (services) must register for GST."
+  },
+  {
+    "question": "How can I pay advance tax?",
+    "answer": "You can pay advance tax online through the income tax e-filing portal or at designated bank branches."
+  },
+  {
+    "question": "What is TDS?",
+    "answer": "TDS stands for Tax Deducted at Source, deducted by the payer while making certain payments like salary, rent, etc."
+  },
+  {
+    "question": "How to claim TDS refund?",
+    "answer": "File your income tax return and the excess TDS will be refunded to your bank account by the Income Tax Department."
+  },
+  {
+    "question": "What is the penalty for late filing of ITR?",
+    "answer": "A late fee of up to ₹5,000 under section 234F may be charged for filing after the due date."
+  },
+  {
+    "question": "How to check GST return status?",
+    "answer": "Login to the GST portal and navigate to Services > Returns > Track Return Status."
+  },
+  {
+    "question": "What is composition scheme under GST?",
+    "answer": "Small taxpayers can pay GST at a fixed rate of turnover under the composition scheme to reduce compliance burden."
+  },
+  {
+    "question": "What is Form 16?",
+    "answer": "Form 16 is a certificate issued by your employer showing the TDS deducted on your salary."
+  },
+  {
+    "question": "What is PAN?",
+    "answer": "PAN stands for Permanent Account Number, a unique 10-digit alphanumeric identifier for taxpayers."
+  },
+  {
+    "question": "What is the due date for paying advance tax?",
+    "answer": "15th June, 15th September, 15th December and 15th March are the due dates for advance tax installments."
+  }
+]
